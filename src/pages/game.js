@@ -243,7 +243,7 @@ const Game = () => {
 
   return (
     <div className="Game">
-      <h1>HAFIZA OYUN</h1>
+      <h1>HAFIZA OYUNU</h1>
       {!isGameStarted ? (
         <div>
           <button onClick={startGame}>Oyuna Başla</button>
