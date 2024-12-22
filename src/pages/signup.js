@@ -61,7 +61,7 @@ function SignUp() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit">Kayıt Ol</button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>

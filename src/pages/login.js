@@ -47,7 +47,7 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">Giriş</button>
       </form>
       {error && <p style={{ color: 'red' }}>"KULLANICI ADI veya ŞİFRE yanlış!!!"</p>}  {/* Hata mesajını göster */}
 
