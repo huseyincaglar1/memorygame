@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';  // Firebase Authentication'ı import ediyoruz
 import { useNavigate } from 'react-router-dom';  // Yönlendirme için useNavigate'i import ediyoruz
 import app from '../firebaseConfig';
+import '../styles/login.css';  // Login stil dosyasını import ediyoruz
+
 
 
 const auth = getAuth(app);  // Firebase Auth hizmetini başlatıyoruz (app'i burada kullanıyoruz)

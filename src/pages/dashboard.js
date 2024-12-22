@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../firebaseConfig"; // Firebase yapılandırmasını içe aktar
 import { collection, getDocs } from "firebase/firestore";
 import { getAuth, signOut } from "firebase/auth"; // Firebase Auth ve signOut içe aktar
+import '../styles/dashboard.css'; // CSS dosyasını içe aktar
 
-// Liderlik tablosunu seviyeye göre sıralayacak ve skor olmayan kullanıcıları filtreleyecek fonksiyon
+// Liderlik tablosunu seviyeye göre sıralama fonksiyonu
 const fetchLeaderboardData = async () => {
   const usersRef = collection(db, "Users"); // 'Users' koleksiyonunu alıyoruz
   const snapshot = await getDocs(usersRef);
@@ -109,17 +110,14 @@ const Dashboard = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "20px" }}>
+    <div className="dashboard-container">
       <h1>ANASAYFA</h1>
-      <button onClick={handleStartGame} style={{ padding: "10px 20px", fontSize: "16px" }}>
+      <button onClick={handleStartGame} className="dashboard-button">
         Oyuna Başla
       </button>
-      
+
       {/* Çıkış Yap butonu */}
-      <button
-        onClick={handleSignOut}
-        style={{ padding: "10px 20px", fontSize: "16px", marginTop: "10px" }}
-      >
+      <button onClick={handleSignOut} className="dashboard-button">
         Çıkış Yap
       </button>
 

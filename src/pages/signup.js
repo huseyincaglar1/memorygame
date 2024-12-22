@@ -3,6 +3,7 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import app from '../firebaseConfig'; // Firebase yapılandırmasını içe aktar
 import { getFirestore, doc, setDoc } from 'firebase/firestore'; // Firestore için gerekli importlar
+import '../styles/signup.css';
 
 const auth = getAuth(app);
 const db = getFirestore(app); // Firestore veritabanı bağlantısı
