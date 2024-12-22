@@ -38,7 +38,7 @@ function SignUp() {
 
   return (
     <div>
-      <h2>Sign Up</h2>
+      <h2>KAYIT OL</h2>
       <form onSubmit={handleSignUp}>
         <input
           type="text"

@@ -258,7 +258,7 @@ const Game = () => {
           {gameOver ? (
             <div>
             <h2>Oyun Bitti!</h2>
-            <p>Puanınız: {score}</p>
+
             <button 
               onClick={() => {
                 if (level === 4) {
