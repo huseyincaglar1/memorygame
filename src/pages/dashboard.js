@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebaseConfig"; // Firebase yapılandırmasını içe aktar
 import { collection, getDocs } from "firebase/firestore";
+import { getAuth, signOut } from "firebase/auth"; // Firebase Auth ve signOut içe aktar
 
 // Liderlik tablosunu seviyeye göre sıralayacak ve skor olmayan kullanıcıları filtreleyecek fonksiyon
 const fetchLeaderboardData = async () => {
@@ -36,11 +37,19 @@ const fetchLeaderboardData = async () => {
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(null); // Giriş yapan kullanıcıyı saklamak için state
 
   useEffect(() => {
     const fetchData = async () => {
       const leaderboardData = await fetchLeaderboardData();
       setUsers(leaderboardData);
+
+      // Giriş yapan kullanıcıyı almak için Firebase Auth kullanıyoruz
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user) {
+        setCurrentUser(user.uid); // Giriş yapan kullanıcının ID'sini saklıyoruz
+      }
     };
 
     fetchData();
@@ -48,6 +57,17 @@ const Dashboard = () => {
 
   const handleStartGame = () => {
     navigate("/game"); // Oyuna başlama sayfasına yönlendirir
+  };
+
+  const handleSignOut = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        navigate("/login"); // Çıkış yapıldığında login sayfasına yönlendir
+      })
+      .catch((error) => {
+        console.error("Çıkış yaparken hata oluştu:", error);
+      });
   };
 
   // Seviye sıralama fonksiyonu
@@ -70,17 +90,22 @@ const Dashboard = () => {
 
   // Kullanıcı bilgilerini ve skorlarını gösterecek tabloyu hazırlama
   const renderUserScores = () => {
-    return users.map((user, index) => {
-      return (
-        <tr key={index}>
-          <td>{user.username}</td>
-          <td>{user.levels.level1 ? user.levels.level1.highestScore : "N/A"}</td>
-          <td>{user.levels.level2 ? user.levels.level2.highestScore : "N/A"}</td>
-          <td>{user.levels.level3 ? user.levels.level3.highestScore : "N/A"}</td>
-          <td>{user.levels.level4 ? user.levels.level4.highestScore : "N/A"}</td>
-        </tr>
-      );
-    });
+    // Eğer giriş yapan kullanıcı varsa, sadece o kullanıcının bilgilerini göster
+    if (currentUser) {
+      const user = users.find((user) => user.userId === currentUser);
+      if (user) {
+        return (
+          <tr key={user.userId}>
+            <td>{user.username}</td>
+            <td>{user.levels.level1 ? user.levels.level1.highestScore : "N/A"}</td>
+            <td>{user.levels.level2 ? user.levels.level2.highestScore : "N/A"}</td>
+            <td>{user.levels.level3 ? user.levels.level3.highestScore : "N/A"}</td>
+            <td>{user.levels.level4 ? user.levels.level4.highestScore : "N/A"}</td>
+          </tr>
+        );
+      }
+    }
+    return null; // Eğer giriş yapan kullanıcı yoksa hiçbir şey gösterme
   };
 
   return (
@@ -88,6 +113,14 @@ const Dashboard = () => {
       <h1>ANASAYFA</h1>
       <button onClick={handleStartGame} style={{ padding: "10px 20px", fontSize: "16px" }}>
         Oyuna Başla
+      </button>
+      
+      {/* Çıkış Yap butonu */}
+      <button
+        onClick={handleSignOut}
+        style={{ padding: "10px 20px", fontSize: "16px", marginTop: "10px" }}
+      >
+        Çıkış Yap
       </button>
 
       <div className="leaderboard-container">
@@ -177,7 +210,7 @@ const Dashboard = () => {
 
         {/* Kullanıcı Bilgileri ve Skorları Tablosu */}
         <div className="leaderboard-table">
-          <h2>Kullanıcı Bilgileri ve Skorlar</h2>
+          <h2>Kendi Skorlarım</h2>
           <table>
             <thead>
               <tr>
