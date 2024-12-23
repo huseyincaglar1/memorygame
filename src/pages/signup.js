@@ -11,7 +11,7 @@ const db = getFirestore(app); // Firestore veritabanı bağlantısı
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState(''); // Kullanıcı adı durumu ekledik
+  const [username, setUsername] = useState(''); // Kullanıcı adı
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
